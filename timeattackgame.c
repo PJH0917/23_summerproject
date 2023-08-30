@@ -1,16 +1,29 @@
 #define NUM_WORDS 20
-#define DISPLAY_TIME 1000 // ´Ü¾î ÇÑ °³ º¸¿©ÁÖ´Âµ¥ µå´Â ½Ã°£ 1ÃÊ (¹Ğ¸®ÃÊ ´ÜÀ§·Î Ç¥Çö)
-#define INPUT_TIME 5000  // ´Ü¾î ÇÑ °³ ÀÔ·ÂÇÏ´Âµ¥ ÁÖ¾îÁø ½Ã°£ 5ÃÊ (¹Ğ¸®ÃÊ ´ÜÀ§)
+#define DISPLAY_TIME 1000 // ë‹¨ì–´ í•œ ê°œ ë³´ì—¬ì£¼ëŠ”ë° ë“œëŠ” ì‹œê°„ 1ì´ˆ (ë°€ë¦¬ì´ˆ ë‹¨ìœ„ë¡œ í‘œí˜„)
+#define INPUT_TIME 5000  // ë‹¨ì–´ í•œ ê°œ ì…ë ¥í•˜ëŠ”ë° ì£¼ì–´ì§„ ì‹œê°„ 5ì´ˆ (ë°€ë¦¬ì´ˆ ë‹¨ìœ„)
 
 #include <stdio.h>
-#include <stdlib.h> // system ÇÔ¼ö, "cls" (Windows¿¡¼­ È­¸éÀ» Áö¿ì´Â ¸í·É¾î)
-#include <string.h> // strcmp (¹®ÀÚ¿­À» ºñ±³ÇÏ´Â ÇÔ¼ö), »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ´Ü¾î¿Í Á¤´ä ´Ü¾î¸¦ ºñ±³ÇÏ´Âµ¥ »ç¿ë
-#include <windows.h> // Sleep ÇÔ¼ö (ÇöÀç ½º·¹µå¸¦ ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë±â½ÃÅ°´Âµ¥ »ç¿ë, °¢ ´Ü¾î¸¦ º¸¿©ÁÖ´Â ½Ã°£À» ÁöÁ¤ÇÔ), _kbhit ÇÔ¼ö (Å°º¸µå¿¡¼­ ÀÔ·ÂµÈ ¹®ÀÚ¸¦ È®ÀÎÇÏ´Âµ¥ »ç¿ëµÇ¸ç, ÇØ´ç ÄÚµå¿¡¼­´Â »ç¿ëÀÚ°¡ ´Ü¾î¸¦ ÀÔ·ÂÇß´ÂÁö ¿©ºÎ¸¦ Ã¼Å©ÇÑ´Ù.)
-#include <time.h> // time_t »ç¿ë
+#include <stdlib.h> // system í•¨ìˆ˜, "cls" (Windowsì—ì„œ í™”ë©´ì„ ì§€ìš°ëŠ” ëª…ë ¹ì–´)
+#include <string.h> // strcmp (ë¬¸ìì—´ì„ ë¹„êµí•˜ëŠ” í•¨ìˆ˜), ì‚¬ìš©ìê°€ ì…ë ¥í•œ ë‹¨ì–´ì™€ ì •ë‹µ ë‹¨ì–´ë¥¼ ë¹„êµí•˜ëŠ”ë° ì‚¬ìš©
+#include <windows.h> // Sleep í•¨ìˆ˜ (í˜„ì¬ ìŠ¤ë ˆë“œë¥¼ ì¼ì • ì‹œê°„ ë™ì•ˆ ëŒ€ê¸°ì‹œí‚¤ëŠ”ë° ì‚¬ìš©, ê° ë‹¨ì–´ë¥¼ ë³´ì—¬ì£¼ëŠ” ì‹œê°„ì„ ì§€ì •í•¨), _kbhit í•¨ìˆ˜ (í‚¤ë³´ë“œì—ì„œ ì…ë ¥ëœ ë¬¸ìë¥¼ í™•ì¸í•˜ëŠ”ë° ì‚¬ìš©ë˜ë©°, í•´ë‹¹ ì½”ë“œì—ì„œëŠ” ì‚¬ìš©ìê°€ ë‹¨ì–´ë¥¼ ì…ë ¥í–ˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì²´í¬í•œë‹¤.)
+#include <time.h> // time_t ì‚¬ìš©
 
-void showing_word(char* word); // ´Ü¾î¸¦ º¸¿©ÁØ´Ù
-void fade_away(); // È­¸é »ç¶óÁö°Ô ÇÔ
-int compare(const void* a, const void* b); // qsort ÇÔ¼ö¿¡ »ç¿ëÇÒ ºñ±³ ÇÔ¼ö
+void print_start()
+{
+    printf("Select the word game: !!!\n");
+    printf("1. animal_quiz\n");
+    printf("2. city_quiz\n");
+    printf("3. fruit_quiz\n");
+
+}
+void showing_word(char* word); // ë‹¨ì–´ë¥¼ ë³´ì—¬ì¤€ë‹¤
+void fade_away(); // í™”ë©´ ì‚¬ë¼ì§€ê²Œ í•¨
+
+int arrange(const void* a, const void* b)
+{
+    return strlen(*(char**)a) - strlen(*(char**)b);
+}
+
 
 int main()
 {
@@ -20,37 +33,79 @@ int main()
         "cormorant","armadillo","pigeon","parrot","dog",
         "cat","killer whale","anteater","sloth","fox",
         "jaguar","puma","capybara","lion","boar"
-    }; // ÃâÁ¦µÉ ´Ü¾îµé
+    }; // ì¶œì œë  ë™ë¬¼ ë‹¨ì–´ë“¤
 
-    // ´Ü¾îµéÀ» ±ÛÀÚ ¼øÀ¸·Î Á¤·Ä
-    qsort(animal_quiz, NUM_WORDS, sizeof(char*), compare);
+    char* city_quiz[NUM_WORDS] = {
+        "Seoul","Busan","Suwon","Rome","Madrid",
+        "Beijng","New York","London","Cairo","Berlin",
+        "Athene","Istanbul","Barcelona","Manchester","Moscow",
+        "Pyongyang","Dubai","Toronto","Manhatton","Shanghai"
+    };// ì¶œì œë  ë„ì‹œ ë‹¨ì–´ë“¤
 
+    char* fruit_quiz[NUM_WORDS] = {
+        "apple","pear","watermelon","melon","banana",
+        "mango","lemon","peach","plum","grape",
+        "cherry","kiwi","coconut","pineapple","strawberry",
+        "rasberry","blackberry","papaya","durian"
+    };//ì¶œì œë  ê³¼ì¼ ë‹¨ì–´ë“¤
+
+
+
+    
     printf("Press Enter to start the game!!");
-    getchar(); // ÀÔ·ÂÀ» ¹Ş´Â´Ù
+    getchar(); // ì…ë ¥ì„ ë°›ëŠ”ë‹¤
 
+    print_start();
+    int selection;
+    scanf_s("%d", &selection);
+    char** quiz_selected = NULL;
+    int num_words = 0;
 
+    switch (selection)
+    {
+    case 1:
+        quiz_selected = animal_quiz;
+        num_words = sizeof(animal_quiz) / sizeof(animal_quiz[0]);
+        break;
+    case 2:
+        quiz_selected = city_quiz;
+        num_words = sizeof(city_quiz) / sizeof(city_quiz[0]);
+        break;
+    case 3:
+        quiz_selected = fruit_quiz;
+        num_words = sizeof(fruit_quiz) / sizeof(fruit_quiz[0]);
+        break;
+    default:
+        printf("It's not a proper number.\n");
+        return 0;
+    }
 
+    printf("Press Enter to start the game.\n");
+    getchar();
+
+    qsort(quiz_selected, num_words, sizeof(char*), arrange);
+    
     for (int i = 0; i < NUM_WORDS; i++)
     {
         printf("\nCurrent Score: %d\n", point);
-        showing_word(animal_quiz[i]); // ¸Å°³º¯¼ö animal_quiz[i]ÀÇ ´Ü¾î¸¦ ¸Å°³º¯¼ö·Î ¹ŞÀ½
-        Sleep(DISPLAY_TIME); // Sleep ÇÔ¼ö¸¦ »ç¿ëÇÏ¿© display_timeÀÇ ½Ã°£ 1ÃÊ¸¸Å­ ÀÏ½ÃÁ¤Áö¸¦ ½ÃÅ°´Â °Í
+        showing_word(quiz_selected[i]); // ë§¤ê°œë³€ìˆ˜ animal_quiz[i]ì˜ ë‹¨ì–´ë¥¼ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ìŒ
+        Sleep(DISPLAY_TIME); // Sleep í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ display_timeì˜ ì‹œê°„ 1ì´ˆë§Œí¼ ì¼ì‹œì •ì§€ë¥¼ ì‹œí‚¤ëŠ” ê²ƒ
         fade_away();
 
         printf("\n%s", "Enter the word: ");
-        time_t timestart = time(NULL); // time(NULL) ÇÔ¼ö´Â ½Ã½ºÅÛÀÇ ÇöÀç ½Ã°£À» ÃÊ ´ÜÀ§·Î ¹İÈ¯, time_t´Â ½Ã°£ Á¤º¸¸¦ ÀúÀåÇÏ´Â µ¥ÀÌÅÍ Çü½Ä, °ÔÀÓ¿¡¼­ ½Ã°£ Á¦ÇÑÀ» ±¸ÇöÇÏ´Âµ¥ »ç¿ëÇÏ´Â ÄÚµå. timestart¿¡ ÇöÀç ½Ã°£À» ÀúÀåÇÔÀ¸·Î½á ÇÃ·¹ÀÌ¾î°¡ ´Ü¾î¸¦ ÀÔ·ÂÇÏ±â ½ÃÀÛÇÑ ½Ã°£À» ±â·Ï.
+        time_t timestart = time(NULL); // time(NULL) í•¨ìˆ˜ëŠ” ì‹œìŠ¤í…œì˜ í˜„ì¬ ì‹œê°„ì„ ì´ˆ ë‹¨ìœ„ë¡œ ë°˜í™˜, time_tëŠ” ì‹œê°„ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” ë°ì´í„° í˜•ì‹, ê²Œì„ì—ì„œ ì‹œê°„ ì œí•œì„ êµ¬í˜„í•˜ëŠ”ë° ì‚¬ìš©í•˜ëŠ” ì½”ë“œ. timestartì— í˜„ì¬ ì‹œê°„ì„ ì €ì¥í•¨ìœ¼ë¡œì¨ í”Œë ˆì´ì–´ê°€ ë‹¨ì–´ë¥¼ ì…ë ¥í•˜ê¸° ì‹œì‘í•œ ì‹œê°„ì„ ê¸°ë¡.
 
-        while (difftime(time(NULL), timestart) * 1000 <= INPUT_TIME) // c¾ğ¾î¿¡¼­ difftime ÇÔ¼ö´Â ½ÃÂ÷¸¦ °è»êÇÒ ¶§ »ç¿ë, difftime(time(NULL), timestart)´Â ÇöÀç ½Ã°£°ú timestart »çÀÌÀÇ Â÷ÀÌ¸¦ ÃÊ ´ÜÀ§·Î ¹İÈ¯.
+        while (difftime(time(NULL), timestart) * 1000 <= INPUT_TIME) // cì–¸ì–´ì—ì„œ difftime í•¨ìˆ˜ëŠ” ì‹œì°¨ë¥¼ ê³„ì‚°í•  ë•Œ ì‚¬ìš©, difftime(time(NULL), timestart)ëŠ” í˜„ì¬ ì‹œê°„ê³¼ timestart ì‚¬ì´ì˜ ì°¨ì´ë¥¼ ì´ˆ ë‹¨ìœ„ë¡œ ë°˜í™˜.
         {
-            if (_kbhit()) // Å°°¡ Å°º¸µå¿¡¼­ ´­·È´ÂÁö È®ÀÎÇÑ´Ù.
+            if (_kbhit()) // í‚¤ê°€ í‚¤ë³´ë“œì—ì„œ ëˆŒë ¸ëŠ”ì§€ í™•ì¸í•œë‹¤.
             {
                 char wordinput[200];
 
-                fgets(wordinput, sizeof(wordinput), stdin); // stdin¿¡¼­ »ç¿ëÀÚ°¡ Å°º¸µå·Î ÀÔ·ÂÇÑ ¹®ÀÚ¿­À» wordinput ¹è¿­¿¡ ÀúÀåÇÑ´Ù. sizeof(wordinput)´Â wordinput ¹è¿­ÀÇ Å©±â¸¦ ³ªÅ¸³½´Ù. ÀÔ·Â¹ŞÀ» ÃÖ´ë ¹®ÀÚ¿­ ±æÀÌ¸¦ Á¦ÇÑÇÑ´Ù->¿À¹öÇÃ·Î¿ì ¹æÁö, stdin »ç¿ëÇØ¼­ Å°º¸µå·Î ÀÔ·ÂÇÑ ¹®ÀÚ¿­À» ÇÁ·Î±×·¥¿¡¼­ ¹Ş¾Æ¿Â´Ù. fgets ÇÔ¼ö ÀÚÃ¼°¡ ÀÔ·ÂµÈ ¹®ÀÚµé°ú ÇÔ²² °³Çà¹®ÀÚ¸¦ ÀÔ·Â¹öÆÛ¿¡¼­ °¡Á®¿Â´Ù.
+                fgets(wordinput, sizeof(wordinput), stdin); // stdinì—ì„œ ì‚¬ìš©ìê°€ í‚¤ë³´ë“œë¡œ ì…ë ¥í•œ ë¬¸ìì—´ì„ wordinput ë°°ì—´ì— ì €ì¥í•œë‹¤. sizeof(wordinput)ëŠ” wordinput ë°°ì—´ì˜ í¬ê¸°ë¥¼ ë‚˜íƒ€ë‚¸ë‹¤. ì…ë ¥ë°›ì„ ìµœëŒ€ ë¬¸ìì—´ ê¸¸ì´ë¥¼ ì œí•œí•œë‹¤->ì˜¤ë²„í”Œë¡œìš° ë°©ì§€, stdin ì‚¬ìš©í•´ì„œ í‚¤ë³´ë“œë¡œ ì…ë ¥í•œ ë¬¸ìì—´ì„ í”„ë¡œê·¸ë¨ì—ì„œ ë°›ì•„ì˜¨ë‹¤. fgets í•¨ìˆ˜ ìì²´ê°€ ì…ë ¥ëœ ë¬¸ìë“¤ê³¼ í•¨ê»˜ ê°œí–‰ë¬¸ìë¥¼ ì…ë ¥ë²„í¼ì—ì„œ ê°€ì ¸ì˜¨ë‹¤.
 
-                wordinput[strcspn(wordinput, "\n")] = '\0'; // ÇöÀç »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ¹®ÀÚ¿­Àº wordinput¿¡ ÀúÀåµÇ¾î ÀÖ´Ù. strcspnÀº wordinput ¹®ÀÚ¿­¿¡¼­ °³Çà¹®ÀÚ "\n"ÀÌ Ã³À½À¸·Î ³ªÅ¸³ª´Â À§Ä¡¸¦ Ã£¾Æ¼­ ¹İÈ¯ÇÑ´Ù. ±×¸®°í ÀÌ°ÍÀ» ³Î·Î ¹Ù²ãÁØ´Ù.
+                wordinput[strcspn(wordinput, "\n")] = '\0'; // í˜„ì¬ ì‚¬ìš©ìê°€ ì…ë ¥í•œ ë¬¸ìì—´ì€ wordinputì— ì €ì¥ë˜ì–´ ìˆë‹¤. strcspnì€ wordinput ë¬¸ìì—´ì—ì„œ ê°œí–‰ë¬¸ì "\n"ì´ ì²˜ìŒìœ¼ë¡œ ë‚˜íƒ€ë‚˜ëŠ” ìœ„ì¹˜ë¥¼ ì°¾ì•„ì„œ ë°˜í™˜í•œë‹¤. ê·¸ë¦¬ê³  ì´ê²ƒì„ ë„ë¡œ ë°”ê¿”ì¤€ë‹¤.
 
-                if (strcmp(wordinput, animal_quiz[i]) == 0) // strcmp´Â ¹®ÀÚ¿­À» ºñ±³ÇÏ´Â ÇÔ¼ö string.h¿¡¼­ °¡Á®¿Â´Ù. strcmp´Â ()¾È¿¡ ºñ±³ÇÏ·Á´Â ¹®ÀÚ¿­ÀÌ °°À¸¸é 0ÀÌ¶ó°í ÇÑ´Ù.
+                if (strcmp(wordinput, quiz_selected[i]) == 0) // strcmpëŠ” ë¬¸ìì—´ì„ ë¹„êµí•˜ëŠ” í•¨ìˆ˜ string.hì—ì„œ ê°€ì ¸ì˜¨ë‹¤. strcmpëŠ” ()ì•ˆì— ë¹„êµí•˜ë ¤ëŠ” ë¬¸ìì—´ì´ ê°™ìœ¼ë©´ 0ì´ë¼ê³  í•œë‹¤.
                 {
                     point += 1;
                 }
@@ -81,11 +136,7 @@ void showing_word(char* word)
 
 void fade_away()
 {
-    system("cls"); // window ¿î¿µÃ¼Á¦¿¡¼­ »ç¿ëÇÏ´Â °Í. ÇöÀç È­¸é¿¡ Ãâ·ÂµÈ ³»¿ëÀ» ¸ğµÎ Áö¿öÁÖ´Â °Í. cls -> clear screen
+    system("cls"); // window ìš´ì˜ì²´ì œì—ì„œ ì‚¬ìš©í•˜ëŠ” ê²ƒ. í˜„ì¬ í™”ë©´ì— ì¶œë ¥ëœ ë‚´ìš©ì„ ëª¨ë‘ ì§€ì›Œì£¼ëŠ” ê²ƒ. cls -> clear screen
 }
 
-int compare(const void* a, const void* b)
-{
-    // ±ÛÀÚ ¼ö¸¦ ºñ±³ÇÏ¿© Á¤·Ä
-    return strlen(*(char**)a) - strlen(*(char**)b);
-}
+
