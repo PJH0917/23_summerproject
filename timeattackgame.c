@@ -28,7 +28,7 @@ int arrange(const void* a, const void* b)
 int main()
 {
     int point = 0;
-    char* animal_quiz[NUM_WORDS] = {
+    char* animal_quiz[NUM_WORDS] = {   //문자열 표현하기 위해 포인터 배열 사용, NUM_WORDS->위 매크로에서 설정한 단어의 개수
         "human","tiger","dragon","monkey","bird",
         "cormorant","armadillo","pigeon","parrot","dog",
         "cat","killer whale","anteater","sloth","fox",
@@ -53,46 +53,46 @@ int main()
 
     
     printf("Press Enter to start the game!!");
-    getchar(); // 입력을 받는다
+    getchar(); // getchar를 통해 enter키 입력을 기다린다.
 
-    print_start();
-    int selection;
+    print_start();//함수를 호출한다. 그리고 게임메뉴를 보여준다.
+    int selection; //사용자가 선택한 게임메뉴를 저장하는 변수
     scanf_s("%d", &selection);
-    char** quiz_selected = NULL;
-    int num_words = 0;
+    char** quiz_selected = NULL;//선택된 게임 모드에 따라서 해당 퀴즈 배열을 나타낼것이다. 
+    int num_words = 0;//선택된 게임모드에 해당하는 퀴즈 단어의 총 개수를 나타낼 변수
 
     switch (selection)
     {
     case 1:
         quiz_selected = animal_quiz;
-        num_words = sizeof(animal_quiz) / sizeof(animal_quiz[0]);
+        num_words = sizeof(animal_quiz) / sizeof(animal_quiz[0]); //animal_quiz의 전체 배열 크기를 배열 첫번째 요소로 나눈다.->요소의 개수가 나온다.
         break;
     case 2:
         quiz_selected = city_quiz;
-        num_words = sizeof(city_quiz) / sizeof(city_quiz[0]);
+        num_words = sizeof(city_quiz) / sizeof(city_quiz[0]);// 위와 동일
         break;
     case 3:
         quiz_selected = fruit_quiz;
-        num_words = sizeof(fruit_quiz) / sizeof(fruit_quiz[0]);
+        num_words = sizeof(fruit_quiz) / sizeof(fruit_quiz[0]);// 위와 동일
         break;
     default:
-        printf("It's not a proper number.\n");
+        printf("It's not a proper number.\n");//1,2,3 이외의 숫자이면 이와 같이 출력.
         return 0;
     }
 
     printf("Press Enter to start the game.\n");
-    getchar();
+    getchar();//getchar를 통해서 엔터키 입력을 기다림
 
-    qsort(quiz_selected, num_words, sizeof(char*), arrange);
+    qsort(quiz_selected, num_words, sizeof(char*), arrange); //quiz_selected 배열을 arrange를 사용하여 정렬. quiz_selected에 동물,도시,과일 배열이 저장되어 있다.num_words는 요소의 개수, sizeof(char*)는 배열 내 요소 1개의 크기이다. qsort를 호출하면 arrange함수를 통해서 정렬된 배열이 quiz_selected에 저장된다. 그리고 단어의 길이에 따라 오름차순으로 정렬되어 나온다.
     
     for (int i = 0; i < NUM_WORDS; i++)
     {
         printf("\nCurrent Score: %d\n", point);
-        showing_word(quiz_selected[i]); // 매개변수 animal_quiz[i]의 단어를 매개변수로 받음
-        Sleep(DISPLAY_TIME); // Sleep 함수를 사용하여 display_time의 시간 1초만큼 일시정지를 시키는 것
-        fade_away();
+        showing_word(quiz_selected[i]); // 매개변수 quiz_selected[i]의 단어를 매개변수로 받음, wordinput화면 보여주기
+        Sleep(DISPLAY_TIME); // Sleep 함수를 사용하여 display_time의 시간 1초만큼 화면 보여주기
+        fade_away();//system("cls")호출
 
-        printf("\n%s", "Enter the word: ");
+        printf("\n%s", "Enter the word: ");//단어 입력
         time_t timestart = time(NULL); // time(NULL) 함수는 시스템의 현재 시간을 초 단위로 반환, time_t는 시간 정보를 저장하는 데이터 형식, 게임에서 시간 제한을 구현하는데 사용하는 코드. timestart에 현재 시간을 저장함으로써 플레이어가 단어를 입력하기 시작한 시간을 기록.
 
         while (difftime(time(NULL), timestart) * 1000 <= INPUT_TIME) // c언어에서 difftime 함수는 시차를 계산할 때 사용, difftime(time(NULL), timestart)는 현재 시간과 timestart 사이의 차이를 초 단위로 반환.
