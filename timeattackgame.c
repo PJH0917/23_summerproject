@@ -19,7 +19,7 @@ void print_start()
 void showing_word(char* word); // 단어를 보여준다
 void fade_away(); // 화면 사라지게 함
 
-int arrange(const void* a, const void* b)
+int arrange(const void* a, const void* b) //quiz_selected의 두 요소가 전달됨. 예를 들어 quiz_selected가 animal_quiz라면 human과 tiger가 전달됨. 그게 a,b가 되는 거임. 그리고 요소들을 가르키는 포인터를 비교하는 것. 
 {
     return strlen(*(char**)a) - strlen(*(char**)b);
 }
@@ -58,7 +58,7 @@ int main()
     print_start();//함수를 호출한다. 그리고 게임메뉴를 보여준다.
     int selection; //사용자가 선택한 게임메뉴를 저장하는 변수
     scanf_s("%d", &selection);
-    char** quiz_selected = NULL;//선택된 게임 모드에 따라서 해당 퀴즈 배열을 나타낼것이다. 
+    char** quiz_selected = NULL;//선택된 게임 모드에 따라서 해당 퀴즈 배열을 나타낼것이다. 여러 퀴즈의 배열을 가리키기 위해 이중포인터로 설정.
     int num_words = 0;//선택된 게임모드에 해당하는 퀴즈 단어의 총 개수를 나타낼 변수
 
     switch (selection)
