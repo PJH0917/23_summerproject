@@ -1,9 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <windows.h> 
+#include <stdlib.h> // system 함수, "cls" (Windows에서 화면을 지우는 명령어)
+#include <string.h> // strcmp (문자열을 비교하는 함수), 사용자가 입력한 단어와 정답 단어를 비교하는데 사용
+#include <time.h> // time_t 사용
+#include <windows.h> // Sleep 함수 (현재 스레드를 일정 시간 동안 대기시키는데 사용, 각 단어를 보여주는 시간을 지정함), _kbhit 함수 (키보드에서 입력된 문자를 확인하는데 사용되며, 해당 코드에서는 사용자가 단어를 입력했는지 여부를 체크한다.)
 #include <stdbool.h>
 
 #define MAX_WORD_LENGTH 100
@@ -39,7 +39,7 @@ void print_start()
 void shuffleArray(int* array, int size);
 void showing_word(char* word); // 단어를 보여준다
 void fade_away(); // 화면 사라지게 함
-int arrange(const void* a, const void* b); // qsort 함수에 사용할 비교 함수
+int arrange(const void* a, const void* b); // qsort 함수에 사용할 비교 함수,//quiz_selected의 두 요소가 전달됨. 예를 들어 quiz_selected가 animal_quiz라면 human과 tiger가 전달됨. 그게 a,b가 되는 거임. 그리고 요소들을 가르키는 포인터를 비교하는 것. 
 
 
 int main()
@@ -76,7 +76,7 @@ int main()
 
     printf("쓰고 싶은 프로그램 선택하세요:\n1.메모장 단어장 프로그램\n2.타임어택 단어 게임\n3.프로그래밍 용어 단어장\n4.?\n");
     scanf("%d", &pjh0917);
-    getchar();
+    getchar();//
 
     switch (pjh0917)
     {
@@ -166,28 +166,28 @@ int main()
 
     case 2:
 
-        print_start();
-        int selection;
+        print_start();//함수를 호출,게임 메뉴 보여주기
+        int selection;//사용자가 선택한 게임메뉴를 저장하는 변수
         scanf_s("%d", &selection);
-        char** quiz_selected = NULL;
-        int num_words = 0;
+        char** quiz_selected = NULL;//선택된 게임 모드에 따라서 해당 퀴즈 배열을 나타낼 것. 여러 퀴즈의 배열을 가리키기 위해 이중포인터로 설정.
+        int num_words = 0;//선택된 게임모드에 해당하는 퀴즈 단어의 총 개수를 나타낼 변수
 
         switch (selection)
         {
         case 1:
             quiz_selected = animal_quiz;
-            num_words = sizeof(animal_quiz) / sizeof(animal_quiz[0]);
+            num_words = sizeof(animal_quiz) / sizeof(animal_quiz[0]);//animal_quiz의 전체 배열 크기를 배열 첫번째 요소로 나눈다.->요소의 개수가 나온다.
             break;
         case 2:
             quiz_selected = city_quiz;
-            num_words = sizeof(city_quiz) / sizeof(city_quiz[0]);
+            num_words = sizeof(city_quiz) / sizeof(city_quiz[0]);//위와 동일
             break;
         case 3:
             quiz_selected = fruit_quiz;
-            num_words = sizeof(fruit_quiz) / sizeof(fruit_quiz[0]);
+            num_words = sizeof(fruit_quiz) / sizeof(fruit_quiz[0]);//위와 동일
             break;
         default:
-            printf("It's not a proper number.\n");
+            printf("It's not a proper number.\n");//1,2,3이외의 숫자이면 이와 같이 출력
             return 0;
         }
 
@@ -198,11 +198,12 @@ int main()
       
 
         printf("Press Enter to start the game!!");
-        getchar(); // 입력을 받는다
+        getchar(); // 엔터키 입력 기다리기
 
 
           // 단어들을 글자 순으로 정렬
-        qsort(quiz_selected, NUM_WORDS, sizeof(char*), arrange);
+        qsort(quiz_selected, NUM_WORDS, sizeof(char*), arrange); //quiz_selected 배열을 arrange를 사용하여 정렬. quiz_selected에 동물,도시,과일 배열이 저장되어 있다.num_words는 요소의 개수, sizeof(char*)는 배열 내 요소 1개의 크기이다. qsort를 호출하면 arrange함수를 통해서 정렬된 배열이 quiz_selected에 저장된다. 그리고 단어의 길이에 따라 오름차순으로 정렬되어 나온다.
+    
 
 
 
@@ -211,9 +212,9 @@ int main()
             printf("\nCurrent Score: %d\n", point);
             showing_word(quiz_selected[i]); // 매개변수 quiz_selected[i]의 단어를 매개변수로 받음
             Sleep(DISPLAY_TIME); // Sleep 함수를 사용하여 display_time의 시간 1초만큼 일시정지를 시키는 것
-            fade_away();
+            fade_away();//system("cls")호출
 
-            printf("\n%s", "Enter the word: ");
+            printf("\n%s", "Enter the word: ");//단어 입력
             time_t timestart = time(NULL); // time(NULL) 함수는 시스템의 현재 시간을 초 단위로 반환, time_t는 시간 정보를 저장하는 데이터 형식, 게임에서 시간 제한을 구현하는데 사용하는 코드. timestart에 현재 시간을 저장함으로써 플레이어가 단어를 입력하기 시작한 시간을 기록.
 
             while (difftime(time(NULL), timestart) * 1000 <= INPUT_TIME) // c언어에서 difftime 함수는 시차를 계산할 때 사용, difftime(time(NULL), timestart)는 현재 시간과 timestart 사이의 차이를 초 단위로 반환.
